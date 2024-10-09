@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from utils.keygen import KeyGen
-from utils.constants import TIME_PERCENTAGE
+from utils import constants as const
 from qb.models import (
     QuestionMetaData,
     Question
@@ -62,7 +62,6 @@ class Test(models.Model):
         seconds_left = (current_time - start_time).total_seconds()
         return seconds_left
     
-    
     def generate_unique_test_name(self) -> str:
         keygen = KeyGen()
         return keygen.alphanumeric_key(5) + keygen.datetime_key()
@@ -92,7 +91,6 @@ class Test(models.Model):
     
     def get_all_metadata_ids(self): pass
         
-    
     def get_renderable_test_report(self) -> list:
         return [{
             'question': q.question.text,
@@ -105,22 +103,23 @@ class Test(models.Model):
                 self.marking_criterion.marking_map()),
         } for q in self.questions.all()] 
     
-    def chapter_wise_short_report(self): pass
+    def chapter_wise_short_report(self): 
+        pass
     
     def save(self, *args, **kwargs) -> None:
         if not self.name:
             self.name = self.generate_unique_test_name()
-        min_time = math.floor(self.question_quantity * TIME_PERCENTAGE)
+        min_time = math.floor(self.question_quantity * const.TIME_PERCENTAGE)
         self.test_length_minute = min_time
-        if self.question_quantity < 15:
-            self.question_quantity = 15 
+        if self.question_quantity < const.MIN_QUES_QTY:
+            self.question_quantity = const.MIN_QUES_QTY 
         super().save(*args, **kwargs)
 
 
 class TestQuestion(models.Model):
     test = models.ForeignKey(
         Test, on_delete=models.CASCADE, related_name='questions')
-    meta = models.ForeignKey(QuestionMetaData, on_delete=models.CASCADE)
+    metadata = models.ForeignKey(QuestionMetaData, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     

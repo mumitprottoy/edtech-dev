@@ -17,11 +17,10 @@ class AdmissionTest(models.Model):
 class University(models.Model):
     admission_test = models.ForeignKey(
         AdmissionTest, on_delete=models.CASCADE, default=1, related_name='universities')
-    name = models.CharField(max_length=100, unique=True)
     acronym = models.CharField(max_length=20, unique=True)
     
     def __str__(self):
-        return self.name
+        return self.acronym  
 
 
 class Chapter(models.Model):
@@ -50,7 +49,7 @@ class Appearance(models.Model):
     year = models.CharField(max_length=10, choices=YEAR_CHOICES)
     
     def appearance_label_str(self):
-        return f'{self.admission_test.acronym} Unit-{{self.unit}} {self.year}'
+        return f'{self.admission_test.acronym} {{self.unit}} {self.year}'
 
 
 class Passage(models.Model):
