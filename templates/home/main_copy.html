@@ -1,0 +1,13 @@
+<div id="main-copy" class="m-t-4">
+    {% for copy in copies %}
+        <div id="main-pic-{{copy.n}}" class="flex">
+            <img src="{{copy.copy.url}}" class="flex-c vert-c pic-l-1 block m-c">
+        </div>
+      <div id="main-text-{copy.n}" class="flex-c vert-c m-t-b-2">
+        <div>
+            <h2>{{copy.copy.title}}</h2>
+            <p>{{copy.copy.copy}}</p>
+        </div>
+      </div>
+    {% endfor %}
+</div>

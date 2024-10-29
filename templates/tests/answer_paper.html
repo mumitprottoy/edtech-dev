@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='{% static "css/base.css" %}?v={{version}}'>
+    <script src='{% static "js/countdown.js" %}?v={{version}}'></script>
+    <script src='{% static "js/answerSubmission.js" %}?v={{version}}'></script>
+    <title>Test | On Progress</title>
+</head>
+<body class="bg-smoke">
+    <div>
+        <form id="submission-form" method="POST">
+            {% csrf_token %}
+        </form>
+    </div>
+
+    <script>
+        const submitPaper = (manual=false) => {
+            let confirmed = true;
+            if (manual) {
+                confirmed = confirm(
+                    'This action will end the test and you will not be able to answer any other questions.');
+                
+            }
+            if (confirmed) {
+                document.getElementById('submission-form').submit();
+            }
+        }
+    </script>
+    <div class="fixed-top w-100" style="z-index: 100;">
+        <div class="resp-80-90 m-c p-4 rnd-1 bg-white">
+            <div class="grid-col-a-1-a">
+                <div class="txt-c flex">
+                    <div class="flex-c vert-c">
+                        <a class="p rnd-1 bg-primary clr-white font-l brd-def" href="javascript:submitPaper(true)">End Test</a>
+                    </div>
+                </div>
+                <div class="flex-c vert-c">
+                    <div class="w-90">
+                        <div>
+                            <span class="font-sm">Answered: <span id="total-answered">{{participant.get_total_answered}}</span> / <span id="total-answerable">{{participant.get_total_answerable}}</span></span>
+                        </div>
+                        <div class="brd-def rnd-1 w-100">
+                            <div id="progress-bar" class="brd-theme-2 bg-theme rnd-1" style="width: 0%; padding: 2px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <span class="flex-c vert-c"><span id="min" class="p m rnd-1 bg-theme clr-white"></span> <span>:</span> <span id="sec" class="p m rnd-1 bg-theme clr-white"></span></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {{timer.get_test_time_remaining_script | safe}}
+    <script>
+        updateProgressBar();
+        const unitNames = ['min', 'sec'];
+        countDown(secsLeft, unitNames, [submitPaper]);
+    </script>
+    
+    <!-- =========== -->
+    
+    
+    <div class="resp-80-90 m-c m-t-8 m-b-4">
+        {% for pack in answer_paper %}
+        <div id="{{pack.meta_id}}" class="m-t-b-6 bg-white rnd-1">
+        {% if pack.passage %}
+        <div class="p-2 m-t-b-2">
+            <span>{{pack.passage.text | safe}}</span>
+        </div>
+        {% endif %}
+        {% for question in pack.questions %}
+        <div id="{{question.answer_id}}" class="{{pack.meta_id}}">
+            <div class="p-2 m-t-b-2">
+                <small class="block font-b">Question</small>
+                <span>{{question.text | safe}}</span>
+                <div>
+                    {% for option in question.options %}
+                    <div class="p m-2 brd-def brd-l-bar-def rnd-1 grid-col-a-1">
+                        <div class="flex">
+                            <input class="m flex-c vert-c" onclick="processAnswer(this)" id="{{option.id}}" name="{{question.answer_id}}" type="radio">
+                        </div>
+                        <div class="flex">
+                            <label class="flex-l vert-c">{{option.text | safe}}</label>
+                        </div>
+                  </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    
+</body>
+</html>

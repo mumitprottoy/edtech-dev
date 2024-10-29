@@ -1,0 +1,16 @@
+{% extends "entrance/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="txt-c">
+        <h1>Login</h1>
+        <form method='POST'>
+            {% csrf_token %}
+            <input placeholder="username" type="text" name="username" style="width: 150px;" class="bg-transparent brd-def rnd-1 p-2 block m-t-b-2 m-c" required>
+            <input placeholder="password" type="password" name="password" style="width: 150px;" class="bg-transparent brd-def rnd-1 p-2 block m-t-b-2 m-c" required>
+            <div class="m-t-b-4 w-fc m-c">
+                <button type="submit" class="clr-white bg-primary rnd-1" style="padding: 0.5em 2em;">Login</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

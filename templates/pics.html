@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <ol>
+        {% for url in urls %}
+        <li><img src="{{url.url}}"></li>  
+        {% endfor %}
+    </ol>
+{% endblock content %}

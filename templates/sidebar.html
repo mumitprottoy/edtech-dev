@@ -1,0 +1,35 @@
+<div id="side-bar" onclick="slideHorizontally(this.id)" class="fixed full-screen" style="z-index: 50; left: -100%; transition: left 0.5s ease;">
+    <div class="resp-40-70 bg-white sdw" style="z-index: 100;">
+        <div class="sections w-90 m-c">
+            <div>
+                <div class="m-b-2 brd-b-def">
+                    <a href="/">
+                        <img class="pic-sm-w-3" src="{{logo_url}}" alt="E for English">
+                    </a>
+                </div>
+            </div>
+                
+            <div>
+                {% if user.is_authenticated %}
+                  <div>
+                    <a href="/" class="flex">
+                        <img src="{{user.pic.url}}" alt="" class="rnd brd-primary-2 flex-c vert-c m pic-sm">
+                        <span class="m flex-c vert-c font-sm font-b">{{user.get_full_name}}</span>
+                        <span class="m flex-c vert-c font-xl fas fa-angle-right"></span>
+                    </a>
+                  </div>
+                  <div class="brd-t-def m-t-2">
+                      <div class="m-t">
+                          <a class="font-l brd-red rnd-1 p clr-red" href="{% url 'logout' %}"><span class="clr-red fa fa-sign-out"></span> Logout</a>
+                      </div>
+                  </div>
+                  {% else %}
+                      <div class="m-t">
+                          <a class="font-l brd-primary rnd-1 p clr-primary" href="{% url 'login' %}"><span class="fa fa-sign-in"></span> Login</a>
+                      </div>
+                {% endif %}
+            </div>
+            <div></div>
+        </div>
+    </div>
+</div>

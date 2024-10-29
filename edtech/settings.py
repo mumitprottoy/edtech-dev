@@ -31,6 +31,9 @@ INSTALLED_APPS = [
     'qb',
     'entrance',
     'tests',
+    'home',
+    'stuff',
+    'profiles',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +51,7 @@ ROOT_URLCONF = 'edtech.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'ui',],
+        'DIRS': [BASE_DIR / 'templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

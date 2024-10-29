@@ -25,6 +25,10 @@ class University(models.Model):
 
 class Chapter(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    
+    @classmethod
+    def get_comp(cls):
+        return cls.objects.get(name='Comprehension')
  
 
 class QuestionMetaData(models.Model):
@@ -38,6 +42,10 @@ class QuestionMetaData(models.Model):
     @classmethod
     def get_all_metadata_by_chapters(cls, chapters: list):
         return cls.objects.filter(chapter__in=chapters)
+    
+    @classmethod
+    def get_all_non_comp(cls):
+        return cls.objects.all().exclude(chapter=Chapter.get_comp())
 
 
 class Appearance(models.Model):

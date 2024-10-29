@@ -1,4 +1,17 @@
 from django.shortcuts import render
+from utils.global_context import Context
+from utils import decorators
+from stuff import models
 
-def home(request):
-    return render(request, 'home/home.html')
+
+def _home(request):
+    context = Context.get_context()
+    context['primary_copy_image'] = models.PrimaryImageCopy.objects.last()
+    copies = list(models.MainCopy.objects.all())
+    context.update({'copies': [{'n': str(i+1), 'copy': copies[i]} for i in range(len(copies))]}) 
+    return render(request, 'home/home.html', context=context)
+
+def pp(request):
+    from stuff.models import ProfilePictureURL as URL
+    context = {'urls': URL.objects.all()}
+    return render(request, 'pics.html', context)

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}    
+    <link rel="stylesheet" href='{% static "css/home.css" %}?v={{version}}'>
+{% endblock head %} 
+
+{% block content %}
+{% include "floating_menu.html" %}
+    <h1>
+        <span class="font-b">Master</span> 
+        <span class="font-b clr-theme">English</span>
+        <br>
+        <span class="font-ssm">Anytime, Anywhere.</span>
+    </h1>
+    <div class="m-b-2 p-2 w-80 m-c">
+        <img src="{{primary_copy_image.url}}" alt="" class="w-100">
+    </div>
+    <div class="w-fc m-c p-2 m-t-b-4">
+        <a href="{% url 'quick-test' %}" class="rnd-4 bg-theme clr-white p-4 brd-def-theme">Give a Quick Test</a>
+    </div>
+    {% include "home/main_copy.html" %}
+{% endblock content %}

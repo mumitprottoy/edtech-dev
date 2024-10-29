@@ -2,6 +2,8 @@ from qb.models import *
 from .stuff import stuff
 from .chapters import chapters
 from .atnu import atnu
+from qb import models
+from . import constants as const
 
 
 def import_universities():
@@ -69,3 +71,41 @@ def import_qb():
             Explanation(question=question, text=__['explanation']).save()
         count += 1
         print(f'{count}/{_len}')
+
+
+def trim():
+    chapter = models.Chapter.objects.filter(name='Comprehension').first()
+    metadata_list = list(models.QuestionMetaData.objects.filter(chapter=chapter))
+    for metadata in metadata_list:
+        questions = list(metadata.questions.all())
+        if (not metadata.has_passage) or (len(questions) < const.COMP_QUES_QTY):
+            metadata.delete()
+        else:
+            i = const.COMP_QUES_QTY
+            while i < len(questions):
+                questions[i].delete()
+                i += 1
+
+def mcqc():
+    chapter = models.Chapter.objects.filter(name='Comprehension').first()
+    metadata_list = list(models.QuestionMetaData.objects.filter(chapter=chapter))
+    for metadata in metadata_list:
+        print(models.Question.objects.filter(metadata=metadata).count())
+        
+
+def chapter_wise_count():
+    return {
+        chapter.name:models.QuestionMetaData.objects.filter(
+            chapter=chapter).count() for chapter in models.Chapter.objects.all()
+    }
+
+
+def chapter_count_map(bulk=models.QuestionMetaData.objects.all()):
+    _map = dict()
+    for m in bulk.all():
+        if m.chapter.name in _map:
+            _map[m.chapter.name] += 1
+        else: _map[m.chapter.name] = 1
+    return _map
+
+
