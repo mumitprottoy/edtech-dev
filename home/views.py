@@ -15,3 +15,17 @@ def pp(request):
     from stuff.models import ProfilePictureURL as URL
     context = {'urls': URL.objects.all()}
     return render(request, 'pics.html', context)
+
+
+def test_json(request):
+    if request.POST:
+        _json = request.POST.get('json')
+        import json
+        _dict = json.loads(_json)
+        print(type(_dict))
+        print(_dict)
+    return render(request, 'home/test_json.html')
+
+
+def nope(request):
+    return render(request, 'nope.html')

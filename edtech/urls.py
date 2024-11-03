@@ -10,6 +10,7 @@ urlpatterns = [
     
     #home
     path('', home_views._home, name='home'),
+    path('nope/', home_views.nope, name='nope'),
     
     # test api
     path('test/submit-answer/<str:key>/<int:answer_id>/<int:option_id>', test_api.post_answer),
