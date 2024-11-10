@@ -28,4 +28,4 @@ def test_json(request):
 
 
 def nope(request):
-    return render(request, 'nope.html')
+    return render(request, 'nope.html', context=Context.get_context())

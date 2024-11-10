@@ -1,4 +1,4 @@
-import random
+import math, random
 from django.contrib.auth.models import User
 from . import models
 from qb import models as qb_models
@@ -223,40 +223,72 @@ class TestEvaluator:
         self.participant = participant
         self.test = self.participant.test
         self.answers = self.participant.answers    
-    
-    def get_total_mark(self) -> float:
-        total_mark = sum([answer.get_mark() for answer in self.answers.all()])
+
+    def get_total_mark(self, ans_sheet=None) -> float:
+        ans_sheet = self.answers.all() if ans_sheet is None else ans_sheet
+        total_mark = sum([answer.get_mark() for answer in ans_sheet])
         return total_mark if total_mark >= 0 else float(0)
     
-    def get_total_mark_str(self) -> str:
-        total_possible_mark = self.answers.count() * self.test.marking_criterion.correct
-        return f'{self.get_total_mark()} / {total_possible_mark}'
+    def total_answerable(self, ans_sheet=None):
+        return self.answers.count() if ans_sheet is None else len(ans_sheet) 
     
-    def get_answer_sheet(self) -> list:
+    def get_total_mark_str(self, ans_sheet=None) -> str:
+        ans_sheet = self.answers.all() if ans_sheet is None else ans_sheet
+        total_count = self.total_answerable(ans_sheet)
+        total_possible_mark = total_count * self.test.marking_criterion.correct
+        return f'{self.get_total_mark(ans_sheet)} / {total_possible_mark}'
+    
+    def get_answer_sheet(self, ans_sheet=None) -> list:
+        ans_sheet = self.answers.all() if ans_sheet is None else ans_sheet
         return [
             answer.get_marking_key() for answer in self.answers.all()]
     
-    def get_short_report(self) -> dict:
-        ans_sheet = self.get_answer_sheet()
+    def get_short_report(self, ans_sheet=None) -> dict:
+        sheet = self.get_answer_sheet(ans_sheet)
         return {
-            'correct': ans_sheet.count(True),
-            'wrong': ans_sheet.count(False),
-            'skipped': ans_sheet.count(None),
+            'score': self.get_total_mark_str(ans_sheet),
+            'total': self.total_answerable(ans_sheet),
+            'correct': sheet.count(True),
+            'wrong': sheet.count(False),
+            'skipped': sheet.count(None),
         }
     
-    def get_correction_rate(self) -> float:
-        ans_sheet = self.get_answer_sheet()
-        return (ans_sheet.count(True) / len(ans_sheet)) * 100 if len(ans_sheet) > 0 else float(0)
-    
-    def get_correction_rate_str(self) -> float:
-        return f'{self.get_correction_rate():.2f}%'
-    
-    def get_detailed_test_report(self) -> list:
-        pass
-    
-    def chapter_wise_short_report(self): 
-        pass
-    
+    def get_solved_ans_sheet(self) -> list:
+        return [
+            {'passage' : member.metadata.passage.text if member.metadata.has_passage else None,
+            'questions': [{
+                'question': question,
+                'options' : [{
+                        'option': option.text,
+                        'is_correct': option.is_correct,
+                        'has_answered': option.id == self.answers.get(
+                            question=question).option_id 
+                    } for option in question.options.all()]
+                } for question in member.metadata.questions.all()]
+            } for member in self.test.question_set.members.all()]
+        
+    def get_chapter_wise_ans_sheet(self): 
+        chapter_map = dict()
+        for ans in self.participant.answers.all():
+            chapter = ans.question.metadata.chapter
+            if not (chapter in chapter_map):
+                chapter_map[chapter] = {'answers': [ans]}
+            else: chapter_map[chapter]['answers'].append(ans)
+        return chapter_map
+
+    def get_chapter_wise_short_report(self):
+        chapter_wise_ans_sheet = self.get_chapter_wise_ans_sheet()
+        report = [{
+            'chapter': chapter,
+            'score': self.get_total_mark(chapter_wise_ans_sheet[chapter]['answers']),
+            'short_report': self.get_short_report(chapter_wise_ans_sheet[chapter]['answers'])
+        } for chapter in chapter_wise_ans_sheet]
+        return sorted(report, key=lambda x: x['score'])
+        
+    def suggestions(self):
+        reports = self.get_chapter_wise_short_report()
+        return reports[:3 if len(reports) <= 3 else len(reports)]
+            
 
 def start_exam(
     bulk: QuerySet, qty: int, user: User, marking_criterion=models.MarkingCriterion.get_default()) -> models.Test:
@@ -271,4 +303,17 @@ def start_exam(
     participant = participant_setter.set_participant()
     TestInitiator(test=test).initiate()
     return participant    
-    
+
+
+def chapter_score(user):
+    _map = dict()
+    for part in models.TestParticipant.objects.filter(user=user):
+        for ans in part.answers.all():
+            chapter = ans.question.metadata.chapter
+            if chapter in _map:
+                _map[chapter]['marks'].append(int(ans.is_correct()))
+            else: _map[chapter] = {'marks' : [int(ans.is_correct())]}
+    return [{
+        'chapter': chapter,
+        'score': math.floor((sum(_map[chapter]['marks']) / len(_map[chapter]['marks'])) * 100)
+    } for chapter in _map]

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "level_header.html" with level=level show_chapter_only=True continue_btn=True progress_bar_bg='bg-white'  %}
+    <div class="brd-b-def"><p class="font-xl">Topics</p></div>
+    {% for l in levels %}
+        {% if l.is_completed %}
+        <div class="p brd-l-bar-theme bg-smoke m-t-b-4">
+            <span class="block m">{{l.topic.title}}</span>
+            <a href="/topic/{{l.id}}" class="p rnd-1 clr-white block m m-t-b-2 bg-theme w-fc">Study</a>
+        </div>
+        {% else %}
+        <div class="p brd-l-bar-def bg-smoke m-t-b-4">
+            <span class="block m clr-b-1"><span class="fa fa-lock clr-b-1"></span> {{l.topic.title}}</span>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% include "floating_menu.html" %}
+{% endblock content %}

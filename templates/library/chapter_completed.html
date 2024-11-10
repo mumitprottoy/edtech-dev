@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="txt-c">
+       <span class="fa fa-check-circle font-xxl clr-theme block m-2"></span> 
+       <span class="font-xl clr-theme block m-2">Chapter Completed!</span> 
+    </div>
+    <div class="brd-l-bar-theme p bg-smoke m-b-2">
+        <div class="m-b">
+            <span class=" font-xl block m">{{learner.chapter.name}}</span>
+        </div>
+        {% include "progress.html" with object=learner bg=progress_bar_bg %}
+        <a href="#" class="clr-white bg-theme rnd-1 p-2 block m m-t-b-2 w-fc">Give practice test on this chapter</a>
+    </div>
+    {% include "floating_menu.html" with clr_library="clr-theme" %}
+{% endblock content %}

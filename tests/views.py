@@ -35,9 +35,8 @@ def test_handler(request, key: str):
                     return render(request, 'tests/answer_paper.html', context)
             else: return render(request, 'tests/waiting_room.html', context)
         evaluator = engine.TestEvaluator(participant)
-        context['score'] = evaluator.get_total_mark_str()
-        context['correction_rate'] = evaluator.get_correction_rate_str()
         context['short_report'] = evaluator.get_short_report()
-        return render(request, 'tests/short_report.html', context)
+        context['suggestions'] = evaluator.suggestions()
+        return render(request, 'tests/result.html', context)
     return redirect('nope')      
     

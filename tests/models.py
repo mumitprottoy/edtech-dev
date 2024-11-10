@@ -118,7 +118,8 @@ class TestTimer(models.Model):
         self.test_time = self.test.question_set.quantity - const.TEST_MIN_CUT
         if not self.start_datetime:
             self.start_datetime = datetime.now()
-        self.start_datetime = self.start_datetime.astimezone(tz=timezone.get_current_timezone())
+        self.start_datetime = self.start_datetime.astimezone(
+             tz=timezone.get_current_timezone())
         super().save(*args, **kwargs)
     
 

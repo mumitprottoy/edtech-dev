@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <span class="font-xl block">Solved Sheet</span>
+    {% for meta in solved_ans_sheet %}
+    <div class="m-t-b-6 brd-def p-2">
+        {% if meta.passage %}
+        <div class="m-t-b-2 brd-b-def p">
+        <span class="font-b block m">Passage</span>
+        <span>{{meta.passage | safe}}</span>
+        </div>
+        {% endif %}
+        {% for q in meta.questions %}
+        <div class="m-t-b-2 p">
+            <span class="font-b block m">Question</span>
+            <span>{{q.question.text | safe}}</span>
+            {% for opt in q.options %}
+                {% if opt.has_answered %}
+                    {% if opt.is_correct %}
+                    <span class="p brd-green brd-l-bar-green rnd-1 block m-2 bg-green clr-white">{{opt.option}}</span>
+                    {% else %}
+                    <span class="p brd-red brd-l-bar-red rnd-1 block m-2">{{opt.option}}</span>
+                    {% endif %}
+                {% else %}
+                    {% if opt.is_correct %}
+                    <span class="p brd-green brd-l-bar-green rnd-1 block m-2">{{opt.option}}</span>
+                    {% else %}
+                    <span class="p brd-def brd-l-bar-def rnd-1 block m-2">{{opt.option}}</span>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="m-t-b-2 brd-l-bar-green p bg-smoke">
+            <span class="font-b block m">Explanation</span>
+            <span class="m">{{q.question.explanation.text | safe}}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock content %}

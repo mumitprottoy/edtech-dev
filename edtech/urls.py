@@ -3,6 +3,8 @@ from django.urls import path
 from home import views as home_views
 from tests import views as test_views, api as test_api
 from entrance import views as entrance_views
+from library import views as lib_views, api as lib_api
+from dashboard import views as dash_views
 
 
 urlpatterns = [
@@ -19,7 +21,20 @@ urlpatterns = [
     path('test/<str:key>', test_views.test_handler),
     path('quick-test', test_views.quick_test, name='quick-test'),
     
-    #entrance
+    # library
+    path('library/', lib_views.chapter_library, name='library'), 
+    path('study/<int:chapter_id>', lib_views.study), 
+    path('all-topics/<int:chapter_id>', lib_views.all_topics),
+    path('topic/<int:level_id>', lib_views.study_topic),
+    
+    # library api 
+    path('amar-onek-buddhi/<str:gibberish>', lib_api.amar_onek_buddhi), 
+    
+    # dashbaord
+    path('dashboard/', dash_views.dashboard, name='dashboard'),
+    path('solved-answer-sheet/<str:key>', dash_views.detailed_report),
+    
+    # entrance
     path('login/', entrance_views.login, name='login'),
     path('logout/', entrance_views.logout, name='logout'),
 ]

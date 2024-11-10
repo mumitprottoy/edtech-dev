@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if current_level %}
+    <span class="font-l block m-b">Pickup where you left</span>
+    {% include "level_header.html" with level=current_level progress_bar_bg='bg-white' continue_btn=True %}
+    {% endif %}
+    
+    
+    {% if chapters.on_progress %}
+    <div class="m-b brd-b-def">
+        <span class="font-l block m-b">On progress</span>
+    </div>
+    {% for level in chapters.on_progress %}
+    {% include "level_header.html" with level=level show_chapter_only=True progress_bar_bg='bg-white' show_topics_link=True %}
+    {% endfor %}
+    {% endif %}
+
+
+    {% if chapters.completed %}
+    <div class="m-b brd-b-def">
+        <span class="font-l block m-b">Completed</span>
+    </div>
+    {% for level in chapters.completed %}
+    {% include "level_header.html" with level=level show_chapter_only=True progress_bar_bg='bg-white' show_topics_link=True %}
+    {% endfor %}
+    {% endif %}
+
+
+    {% if chapters.untouched %}
+    <div class="m-b brd-b-def">
+        <span class="font-l block m-b">Start studying</span>
+    </div>
+    {% for chapter in chapters.untouched %}
+    <div class="brd-l-bar-def p bg-smoke m-b-2">
+        <span class="font-l block m">{{chapter.name}}</span>
+        <a href="/study/{{chapter.id}}" class="font-l m">Start <span class="clr-theme fa fa-arrow-right font-sm"></span></a>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    {% include "floating_menu.html" with clr_library="clr-theme" %}
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "dashboard/short_report.html" with short_report=short_report %}
+    <p class="font-xl">Chapters to focus on</p>
+    {% for sug in suggestions %}
+    <div class="brd-l-bar-theme bg-smoke p m-2">
+        <span class="font-l font-b block m">{{sug.chapter.name}}</span>
+        <span class="font-l block m">Score: {{sug.short_report.score}}</span>
+    </div>
+    {% endfor %}
+    {% include "floating_menu.html" %}
+{% endblock content %}

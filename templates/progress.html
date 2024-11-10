@@ -1,0 +1,6 @@
+{% if object.progress_css_str %}
+<span class="block m"><span class="font-n">{{object.progress}}</span>% Completed</span>
+<div class="m {{bg}} rnd-1 w-80">
+    <div class="p-sm rnd-1 bg-theme" style="{{object.progress_css_str}}"></div>
+</div>
+{% endif %}

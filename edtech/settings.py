@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'stuff',
     'profiles',
     'library',
+    'interface',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

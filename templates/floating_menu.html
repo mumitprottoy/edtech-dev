@@ -1,32 +1,32 @@
 {% if user.is_authenticated %}
 <div class="fixed w-100" style="bottom: 5%; left: 0%; z-index: 50;">
-        <div class="resp-30-80 m-c p-2 rnd-4 sdw bg-white">
-            <div class="grid-col-111">
-               
-                    <div class="txt-c m">
-                        <a href="/">
-                            <span class="font-xl fas fa-chalkboard-teacher block"></span>
-                            <span class="font-ssm">Practise</span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="txt-c m">
-                        <a href="/">
-                            <span class="font-xl fa fa-book block"></span>
-                            <span class="font-ssm">Study</span>
-                        </a>
-                    </div>
-               
-              
-                    <div class="txt-c m">
-                        <a href="/">
-                            <span class="font-xl fa fa-line-chart block"></span>
-                            <span class="font-ssm">Dashboard</span>
-                        </a>
-                    </div>
-               
+    <div class="resp-30-80 m-c p-2 rnd-4 sdw bg-white">
+        <div class="grid-col-111">
+           
+            <div class="txt-c m">
+                <a href="/quick-test">
+                    <span class="font-xl fas fa-chalkboard-teacher block {{clr_practise}}"></span>
+                    <span class="font-ssm {{clr_practise}}">Practise</span>
+                </a>
             </div>
+        
+        
+            <div class="txt-c m">
+                <a href="{% url 'library' %}">
+                    <span class="font-xl fa fa-book block {{clr_library}}"></span>
+                    <span class="font-ssm {{clr_library}}">Library</span>
+                </a>
+            </div>
+        
+        
+            <div class="txt-c m">
+                <a href="{% url 'dashboard' %}">
+                    <span class="font-xl fa fa-line-chart block {{clr_dashboard}}"></span>
+                    <span class="font-ssm {{clr_dashboard}}">Dashboard</span>
+                </a>
+            </div>
+           
         </div>
+    </div>
 </div>
 {% endif %}

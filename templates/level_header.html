@@ -1,0 +1,39 @@
+<div class="brd-l-bar-theme p bg-smoke m-b-2">
+    <div class="m-b">
+        {% if show_chapter_only %}
+        <span class="font-l block m">{{level.learner.chapter.name}}</span>
+        {% else %}
+        
+        {% if level.is_completed %}
+        <span class="font-xl block m">Quiz</span>
+        {% endif %}
+        
+        <span class="font-l block m">{{level.topic.title}}</span>
+        <span class="block m">{{level.topic.chapter.name}}</span>
+        {% endif %}
+    </div>
+    
+    {% if progress_bar_bg %}
+    {% include "progress.html" with object=level.learner bg=progress_bar_bg %}
+    {% endif %}
+
+    {% if show_topics_link %}
+    <a href="/all-topics/{{level.topic.chapter.id}}" class="m">See topics</a>
+
+    {% if not level.learner.is_completed %}
+    <a href="/study/{{level.topic.chapter.id}}" class="m">Continue</a>
+    {% endif %}
+
+    {% else %}
+      
+    {% if continue_btn %}
+    
+    {% if not level.learner.is_completed %}
+    <a href="/study/{{level.topic.chapter.id}}" class="clr-white bg-theme rnd-1 p-2 block m m-t-b-2 w-fc">Continue</a>
+    {% endif %}
+    
+    {% endif %}
+
+    {% endif %}
+
+</div>

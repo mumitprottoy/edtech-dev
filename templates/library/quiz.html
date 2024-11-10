@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <audio id="r" src="https://sounds.e-forenglish.com/quiz/correct.mp3" preload="auto"></audio>
+    <audio id="w" src="https://sounds.e-forenglish.com/quiz/wrong.mp3" preload="auto"></audio>
+    <div class="p-2 m-b-2">
+        {% include "level_header.html" with level=level %}
+        {% include "progress.html" with object=level.quiz bg="bg-smoke" %}
+    </div>
+    <div class="p bg-smoke">
+        <span class="font-b block">Question</span>
+        <p>{{package.question.text | safe}}</p>
+        <span class="font-b block">Options</span>
+        <div id="options" class="w-90">
+            {% for option in package.options %}
+            <a href="#" id="{{option.id}}" class="w-100 block clr-primary p m-t-b-4 brd-def brd-l-bar-def pointer" onclick="___(this); buddhirKhela(this)" return false>
+                {{option.text | safe}}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="c-f" style="display: none;" class="m-t-b-6 w-fc m-c">
+        <a href="" class="clr-white bg-theme rnd-1 p-2">Continue</a>
+    </div>
+    <script src='{% static "js/lsd.js" %}?v={{version}}'></script>
+    <script>{{json_validator | safe}}</script>
+{% endblock content %}

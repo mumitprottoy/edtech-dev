@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="p-2 m-b-2">
+        {% include "level_header.html" with level=level %}
+        {% if show_progress_bar %}
+        {% include "progress.html" with object=learner bg="bg-smoke" %}
+        {% endif %}
+    </div>
+    <div class="m-t-b-6 brd-t-def bg-smoke p-2">
+        {{level.topic.content | safe}}
+    </div>
+    {% if show_form %}
+    {% include "continue_form.html" %}
+    {% else %}
+    {% include "floating_menu.html" %}
+    {% endif %}
+{% endblock content %}
