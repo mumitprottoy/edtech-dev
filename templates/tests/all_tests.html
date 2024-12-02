@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <p class="font-xl">All Tests ({{timers_count}})</p>
+    {% for timer in timers %}
+      <fieldset class="rnd-1 brd-def p m-t-b-4">
+        <legend class="bg-theme clr-white p rnd-1">{{timer.start_datetime | timesince}} ago</legend>
+        <span class="m block clr-b-5">Name: {{timer.test.name}}</span>
+        <a href="/test/{{timer.test.key}}" class="m block">See Report</a>
+      </fieldset>
+    {% endfor %}
+{% endblock content %}

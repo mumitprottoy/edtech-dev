@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+    {% include "single_input_form.html" with form_data=form_data errors=errors %}
+{% endblock content %}

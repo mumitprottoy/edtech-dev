@@ -243,7 +243,7 @@ class TestEvaluator:
         return [
             answer.get_marking_key() for answer in self.answers.all()]
     
-    def get_short_report(self, ans_sheet=None) -> dict:
+    def get_short_report_dict(self, ans_sheet=None) -> dict:
         sheet = self.get_answer_sheet(ans_sheet)
         return {
             'score': self.get_total_mark_str(ans_sheet),
@@ -252,7 +252,37 @@ class TestEvaluator:
             'wrong': sheet.count(False),
             'skipped': sheet.count(None),
         }
-    
+        
+    def get_short_report_list(self, ans_sheet=None) -> dict:
+        sheet = self.get_answer_sheet(ans_sheet)
+        return [
+            {
+            'name': 'Score',
+            'value': self.get_total_mark_str(ans_sheet),
+            'border': 'brd-l-bar-theme'
+            },
+            {
+            'name': 'Total',
+            'value': self.total_answerable(ans_sheet),
+            'border': 'brd-l-bar-primary'
+            },
+            {
+            'name': 'Correct',
+            'value': sheet.count(True),
+            'border': 'brd-l-bar-green'
+            },
+            {
+            'name': 'Wrong',
+            'value': sheet.count(False),
+            'border': 'brd-l-bar-red'
+            },
+            {
+            'name': 'Skipped',
+            'value': sheet.count(None),
+            'border': 'brd-l-bar-def'
+            },
+        ]
+        
     def get_solved_ans_sheet(self) -> list:
         return [
             {'passage' : member.metadata.passage.text if member.metadata.has_passage else None,
@@ -281,7 +311,7 @@ class TestEvaluator:
         report = [{
             'chapter': chapter,
             'score': self.get_total_mark(chapter_wise_ans_sheet[chapter]['answers']),
-            'short_report': self.get_short_report(chapter_wise_ans_sheet[chapter]['answers'])
+            'short_report': self.get_short_report_dict(chapter_wise_ans_sheet[chapter]['answers'])
         } for chapter in chapter_wise_ans_sheet]
         return sorted(report, key=lambda x: x['score'])
         

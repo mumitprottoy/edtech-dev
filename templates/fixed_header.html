@@ -8,7 +8,8 @@
                 <img src="{{user.pic.url}}" class="pic-sm-1 rnd brd-primary-2 sdw">
             </a>
             {% else %}
-            <a class="flex-c vert-c clr-white font-l bg-primary rnd-1 p-1-4" href="{% url 'login' %}">Login</a>
+            <!-- <a class="font-l brd-primary rnd-1 p clr-white bg-primary flex-c vert-c" href="{% url 'login' %}"><span class="fa fa-sign-in clr-white"></span> <span class="clr-white">Enter</span></a> -->
+            <a class="font-l rnd-1 flex-c vert-c clr-white bg-primary p-1-4" href="{% url 'login' %}">Enter</a>
             {% endif %}
         </div>
     </div>

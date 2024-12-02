@@ -6,6 +6,7 @@ admin.site.register([
     models.MainCopy, 
     models.PrimaryImageCopy,
     models.ProfilePictureURL,
-    models.Name
+    models.Name,
+    models.Image
 ])
 

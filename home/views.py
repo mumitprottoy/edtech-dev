@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from utils.global_context import Context
 from utils import decorators
 from stuff import models
 
-
+@decorators.phone_number_required
 def _home(request):
     context = Context.get_context()
     context['primary_copy_image'] = models.PrimaryImageCopy.objects.last()

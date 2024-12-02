@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+    <div class="w-fc m-c m-t-b-2 txt-c">
+        <span class="font-xxl fa fa-check-circle clr-theme"></span>
+        <p class="font-xl">{{success_msg}}</p>
+    </div>
+    {% include "floating_menu.html" %}
+{% endblock content %}

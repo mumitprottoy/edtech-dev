@@ -15,10 +15,9 @@ SECRET_KEY = 'django-insecure-&pys_(0c8p3%b6n0m!s*u+uak=rwwspu1b94y)-$wagltu0p(4
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+SITE_ID = 1
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     # py built in
     'requests',
@@ -40,6 +40,16 @@ INSTALLED_APPS = [
     'library',
     'interface',
     'dashboard',
+    'productmanagement',
+    'payment',
+    'sales',
+    
+    # externals
+    'aamarpay',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'edtech.urls'
@@ -70,6 +81,11 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+SOCIALACCOUNT_ADAPTER = 'profiles.adapters.CustomSocialAccountAdapter'
 WSGI_APPLICATION = 'edtech.wsgi.application'
 
 
@@ -87,6 +103,17 @@ DATABASES = {
     }
 }
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email'
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
 
 
 # Password validation
@@ -132,3 +159,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

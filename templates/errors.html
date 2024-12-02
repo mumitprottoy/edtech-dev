@@ -1,0 +1,7 @@
+{% if errors %}
+<div class='p brd-l-bar-red m-t-b-2 bg-red-7'>
+    {% for error in errors %}
+    <span class='block m-2 clr-white'>{{error |safe}}</span>
+    {% endfor %}
+</div>
+{% endif %}

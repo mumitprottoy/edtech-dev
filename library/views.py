@@ -6,6 +6,7 @@ from utils import decorators, global_context
 
 
 @decorators.login_required
+@decorators.phone_number_required
 def chapter_library(request):
     context = global_context.Context.get_context()
     context['current_level'] = ops.current_level(request.user)
@@ -14,6 +15,7 @@ def chapter_library(request):
         
 
 @decorators.login_required
+@decorators.phone_number_required
 def study(request, chapter_id: int):
     context = global_context.Context.get_context()
     chapter = qb_models.Chapter.objects.filter(id=int(chapter_id))
@@ -47,6 +49,7 @@ def study(request, chapter_id: int):
 
 
 @decorators.login_required
+@decorators.phone_number_required
 def all_topics(request, chapter_id: int):
     chapter = qb_models.Chapter.objects.filter(id=int(chapter_id))
     if chapter.exists():
@@ -62,6 +65,7 @@ def all_topics(request, chapter_id: int):
 
 
 @decorators.login_required
+@decorators.phone_number_required
 def study_topic(request, level_id:int):
     level = models.Level.objects.filter(id=int(level_id))
     if level.exists():
@@ -74,9 +78,8 @@ def study_topic(request, level_id:int):
 
 
 @decorators.login_required
+@decorators.phone_number_required
 def practise_chapters(request):
     context = global_context.Context.get_context()
     context['chapter'] = qb_models.Chapter.objects.get(name='Preposition')
     return render(request, 'library/practise_chapters.html', context)
-
-    

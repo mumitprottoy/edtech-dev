@@ -2,10 +2,15 @@
 {% load static %}
 
 {% block content %}
+    <div class="m-t-b-4">
+        <a class="m p brd-b-theme" href="#">Summary</a>
+        <a class="m p clr-b-5 brd-b-def" href="/solved-answer-sheet/{{participant.test.key}}">Details</a>
+        <!-- <a class="m p clr-b-5 brd-b-def" href="/chapter-wise-summary/{{participant.test.key}}">Chapter-wise</a> -->
+    </div>
     {% include "dashboard/short_report.html" with short_report=short_report %}
     <p class="font-xl">Chapters to focus on</p>
     {% for sug in suggestions %}
-    <div class="brd-l-bar-theme bg-smoke p m-2">
+    <div class="brd-l-bar-theme bg-smoke p m-2 rnd-1">
         <span class="font-l font-b block m">{{sug.chapter.name}}</span>
         <span class="font-l block m">Score: {{sug.short_report.score}}</span>
     </div>

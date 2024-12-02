@@ -128,6 +128,14 @@ class TestParticipant(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='participants')
     has_submitted = models.BooleanField(default=False)
     
+    @property
+    def has_ended(self):
+        return self.test.timer.has_ended() or self.has_submitted
+    
+    @property
+    def has_timer(self):
+        return hasattr(self.test, 'timer')
+    
     def get_answer_paper(self) -> dict:
         answer_paper: list[dict] = list()
         for member in self.test.question_set.members.all():

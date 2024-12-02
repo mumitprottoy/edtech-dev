@@ -30,6 +30,7 @@
 .bg-azure { background-color: azure; }
 .bg-green { background-color: green; }
 .bg-red { background-color: red; }
+.bg-red-7 { background-color: rgba(255,0,0,0.7); }
 .bg-smoke { background-color: whitesmoke; }
 .bg-b-1 { background-color: var(--clr-b-1); }
 .bg-b-2 { background-color: var(--clr-b-2); }
@@ -398,6 +399,15 @@ button {
     border-radius: 60px;
 }
 
+.rnd-l-1 {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.rnd-r-1 {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
 
 .rnd-none {
     border-radius: 0px;
@@ -557,8 +567,6 @@ button {
     border: 1px solid whitesmoke;
 }
 
-
-
 .brd-red-2 {
     border: 2px solid red;
 }
@@ -664,6 +672,11 @@ button {
 .grid-col-12 {
     display: grid;
     grid-template-columns: 1fr 2fr;
+}
+
+.grid-col-31 {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
 }
 
 

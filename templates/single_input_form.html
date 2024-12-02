@@ -1,0 +1,19 @@
+    <div class="m-t-b-4">
+        <h1 class="font-lt">{{form_data.form_header}}</h1>
+        {% if errors %}
+        {% include "errros.html" with errors=errors %}
+        {% endif %}
+        <div class="m-t-b-4">
+            <form method='POST'>
+                {% csrf_token %}
+                <div class="grid-col-31 resp-70-90">
+                    <div class="flex-l brd-def vert-c rnd-l-1">
+                        <input class="w-90 p-2 no-brd" type="{{form_data.input_type}}" name="{{form_data.input_name}}" placeholder="{{form_data.input_placeholder}}" required>
+                    </div>
+                    <div class="flex-c vert-c bg-theme brd-theme rnd-r-1">
+                        <button type="submit" class="p-2 clr-white font-l">{{form_data.submit_btn_text}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

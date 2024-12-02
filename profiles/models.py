@@ -16,3 +16,15 @@ class Picture(models.Model):
         if not self.url:
             self.url = self.choose_pic().url
         super().save(*args, **kwargs)
+
+
+class Phone(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='phone')
+    number = models.CharField(max_length=20, default='') 
+    
+        
+class UserStatus(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='status')
+    is_premium = models.BooleanField(default=False)
+    
+    

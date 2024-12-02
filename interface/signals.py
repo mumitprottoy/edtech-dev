@@ -14,11 +14,17 @@ def add_profile_pic(instance: User, created: bool, *args, **kwargs):
 
 
 @receiver(post_save, sender=User)
+def set_user_status(instance: User, created: bool, *args, **kwargs):
+    user = instance
+    if created:
+        profile_models.UserStatus(user=user).save()
+
+
+@receiver(post_save, sender=User)
 def assign_full_name(instance: User, created: bool, *args, **kwargs):
     user = instance
     if created and (not (user.first_name and user.last_name)):
-        first_name, last_name = stuff_models.Name.get_random_name()
-        user.first_name = first_name; user.last_name = last_name
+        user.first_name, user.last_name = stuff_models.Name.get_random_name()
         user.save()
 
 
